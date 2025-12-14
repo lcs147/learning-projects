@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Formulário</title>
+</head>
+
+<body>
+	<h1>Formulário de Contato</h1>
+    <form id="contato" method="POST" action="/user/contato">
+        <fieldset>
+            <legend>Dados básicos</legend>
+            Nome <input type="text" value="" name="nome" required /> <br>
+            Email <input type="email" name="email" id="email" required placeholder="seunome@dominio.com.br"> <br>
+            Website <input type="url" value="http://" name="website"/> <br>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Seu curso</legend>
+            <input type="radio" name="curso" value="cc" id="cc"> <label for="cc"> Ciência da Computação  </label> <br>
+            <input type="radio" name="curso" value="si" id="si"> <label for="si"> Sistemas de Informação </label> <br>
+            <input type="radio" name="curso" value="ec" id="ec" required> <label for="ec"> Engenharia da Computação </label> <br>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Assinale as linguagens já utilizadas por você</legend>
+            <label for="java">Java</label>
+            <input type="checkbox" name="ling[]" id="java" value="java">
+            <label for="c">C</label>
+            <input type="checkbox" name="ling[]" id="c" value="c">
+            <label for="cpp">C++</label>
+            <input type="checkbox" name="ling[]" id="cpp" value="cpp">
+            <label for="perl">Perl</label>
+            <input type="checkbox" name="ling[]" id="perl" value="perl">
+            <label for="python">Python</label>
+            <input type="checkbox" name="ling[]" id="python" value="python">
+            <label for="js">Javascript</label>
+            <input type="checkbox" name="ling[]" id="js" value="js">
+        </fieldset>
+        
+        <fieldset>
+            <legend>Dados complementares</legend>
+            Cor favorita <input type="color" id="corfavorita" name="corfavorita" value="#000000" required> <br>
+            Data de nascimento <input type="date" name="nascimento" id="nascimento" required> <br>
+            Ano de entrada em seu curso <input type="number" name="ano_entrada" min="1980" max="2026" step="1" value="2025" id="ano" required> <br>
+            Nota para este site <input type="range" id="nota" name="nota" min="0" max="5"> <br>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Área de atuação</legend>
+            <select name="area" id="area">
+                <option value="1">Banco de Dados</option>
+                <option value="2">Educação a Distância</option>
+                <option value="3">Engenharia de Software</option>
+                <option value="4">Otimização</option>
+                <option value="5">Programação para a Web</option>
+                <option value="6">Recuperação de Informação</option>
+                <option value="7">Redes de Computadores</option>
+                </select>
+        </fieldset>
+        
+        
+        <fieldset>
+            <legend>Submeta seu curriculo vitae</legend>
+            <input type="file" name="curriculo" required>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Escreva sua mensagem</legend>
+            <textarea name="mensagem" rows="4" cols="30"></textarea>
+        </fieldset>
+        <input type="reset" value="Resetar Dados" />
+        <input type="submit" name="submit" value="Enviar mensagem" />
+    </form>
+</body>
+
+</html>
