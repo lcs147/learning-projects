@@ -1,0 +1,11 @@
+input {
+  width: 2em;
+}
+
+div {
+  margin-bottom: 1em;
+}
+
+li {
+  list-style-type: none;
+}

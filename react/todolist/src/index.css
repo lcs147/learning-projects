@@ -1,0 +1,32 @@
+body {
+  background-color: lightpink;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+h1 {
+  margin: 16px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 0;
+  padding: 0;
+}
+
+li {
+  padding-top: 5px;
+  font-size: large;
+}
+
+.donetask {
+  text-decoration: line-through;
+}
+
+button {
+  font-size: large;
+}
+span {
+  text-align: left;
+}
