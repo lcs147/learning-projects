@@ -1,0 +1,83 @@
+/* src/components/TaskItem.css */
+.task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-left: 5px solid #007bff; /* Blue border for pending */
+    border-radius: 4px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.task-card.concluded {
+    border-left: 5px solid #4CAF50; /* Green border for concluded */
+    opacity: 0.6;
+    background-color: #f9f9f9;
+}
+
+.task-info {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.task-title {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.task-card.concluded .task-title {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.task-content {
+    margin: 0;
+    font-size: 0.9em;
+    color: #666;
+    white-space: pre-wrap; /* Preserve formatting for content */
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+.btn-conclude {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-conclude:hover {
+    background-color: #0056b3;
+}
+
+.btn-unconclude {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.btn-unconclude:hover {
+    background-color: #e0a800;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
