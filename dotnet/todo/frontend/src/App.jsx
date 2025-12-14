@@ -11,7 +11,6 @@ function App() {
   const [newTaskContent, setNewTaskContent] = useState('');
   const [error, setError] = useState(null);
 
-  // --- Data Fetching ---
   const fetchTasks = async () => {
     setLoading(true);
     setError(null);
@@ -33,8 +32,6 @@ function App() {
   useEffect(() => {
     fetchTasks();
   }, []);
-
-  // --- Task Operations ---
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
@@ -59,10 +56,8 @@ function App() {
         throw new Error(`Failed to create task: ${response.statusText}`);
       }
 
-      // Refresh the list after successful creation
       await fetchTasks();
 
-      // Clear the form
       setNewTaskTitle('');
       setNewTaskContent('');
     } catch (err) {
@@ -71,7 +66,8 @@ function App() {
     }
   };
 
-  const handleDeleteTask = async (id) => {
+  
+  const onDelete = async (id) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
@@ -81,7 +77,6 @@ function App() {
         throw new Error(`Failed to delete task: ${response.statusText}`);
       }
 
-      // Optimistically update the UI
       setTasks(tasks.filter(task => task.id !== id));
     } catch (err) {
       console.error('Delete error:', err);
@@ -89,7 +84,7 @@ function App() {
     }
   };
 
-  const handleToggleConclude = async (task) => {
+  const onToggleConclude = async (task) => {
     const newConcluded = !task.concluded;
     const url = newConcluded ? `${API_URL}/${task.id}/conclude` : `${API_URL}/${task.id}`;
 
@@ -108,8 +103,7 @@ function App() {
         if (!response.ok) {
             throw new Error(`Failed to update task: ${response.statusText}`);
         }
-
-        // Update the state based on the new concluded status
+        
         setTasks(prevTasks =>
             prevTasks.map(t =>
                 t.id === task.id ? { ...t, concluded: newConcluded } : t
@@ -119,7 +113,7 @@ function App() {
         console.error('Update error:', err);
         setError('Could not update the task status.');
     }
-};
+  };
 
   // --- Rendering ---
   if (loading) return <div className="container">Loading tasks...</div>;
@@ -130,9 +124,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Simple Todo List 📝</h1>
-      <p>Powered by a C# Minimal API and React/Vite</p>
-
+      <h1>Simple Todo List</h1>
       {/* --- Task Creation Form --- */}
       <div className="card new-task-form">
         <h2>Add New Task</h2>
@@ -160,19 +152,19 @@ function App() {
 
       {/* --- Pending Tasks List --- */}
       <div className="task-list-section">
-        <h2>⏳ Pending Tasks ({pendingTasks.length})</h2>
+        <h2>Pending Tasks ({pendingTasks.length})</h2>
         <div className="task-list">
           {pendingTasks.length > 0 ? (
             pendingTasks.map((task) => (
               <TaskItem
                 key={task.id}
                 task={task}
-                onDelete={handleDeleteTask}
-                onToggleConclude={handleToggleConclude}
+                onDelete={onDelete}
+                onToggleConclude={onToggleConclude}
               />
             ))
           ) : (
-            <p className="no-tasks">🎉 No pending tasks! Time to relax.</p>
+            <p className="no-tasks">No pending tasks.</p>
           )}
         </div>
       </div>
@@ -181,15 +173,15 @@ function App() {
 
       {/* --- Concluded Tasks List --- */}
       <div className="task-list-section concluded-list">
-        <h2>✅ Concluded Tasks ({concludedTasks.length})</h2>
+        <h2>Concluded Tasks ({concludedTasks.length})</h2>
         <div className="task-list">
           {concludedTasks.length > 0 ? (
             concludedTasks.map((task) => (
               <TaskItem
                 key={task.id}
                 task={task}
-                onDelete={handleDeleteTask}
-                onToggleConclude={handleToggleConclude}
+                onDelete={onDelete}
+                onToggleConclude={onToggleConclude}
               />
             ))
           ) : (

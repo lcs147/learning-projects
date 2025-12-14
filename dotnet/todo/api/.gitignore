@@ -1,32 +1,33 @@
 [Bb]in/
 [Oo]bj/
-.vs/
-.idea/
-TestResults/
 
-# Build and project files
 *.pdb
 *.suo
 *.user
-*.userprefs
-*.vshost.exe
-*.docstates
-*.vssscc
-*.vspscc
-[Dd]ebug/
-[Rr]elease/
-**/publish/
-bin/
-obj/
-*.db
+*.userosscache
+*.sln.docstates
+*.vshost.*
 
-# Nuget and dependencies
-packages/
-*.nupkg
 .nuget/
-project.lock.json
 
-# Configuration
-appsettings.Development.json
-appsettings.Staging.json
-app
+project.assets.json
+
+*.nuget.g.props
+*.nuget.g.targets
+project.nuget.cache
+*.csproj.EntityFrameworkCore.targets
+
+TodoApi.db
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+
+
+[Ll]ogs/
+*.log
+
+.vscode/
+
+TestResults/
+.coverage
