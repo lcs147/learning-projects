@@ -17,7 +17,6 @@ project.assets.json
 project.nuget.cache
 *.csproj.EntityFrameworkCore.targets
 
-TodoApi.db
 *.sqlite
 *.db
 *.db-shm

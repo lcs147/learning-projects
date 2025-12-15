@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var appOrigins = "myAppOrigins";
+var appOrigins = "Frontend";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: appOrigins,
