@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace TodoAPI.Models;
 public class TodoTask
@@ -13,3 +14,5 @@ public class TodoTask
     public bool Concluded { get; set; } = false;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 }
+
+public record TodoTaskDto(string Title, string Content, bool Concluded);

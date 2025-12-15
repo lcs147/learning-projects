@@ -11,11 +11,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 
-var jwtKey = "ImUUqGjuzQACQciNEJydxXybdqotjKsH";
-var jwtIssuer = "TodoAPI";
-var jwtAudience = "TodoAPI";
 
 var builder = WebApplication.CreateBuilder(args);   
+
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = "TodoAPI";
+var jwtAudience = "TodoAPI";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -99,7 +100,7 @@ app.MapPost("/login", async (AppDbContext db, TodoUserDto request) => {
         issuer: jwtIssuer,
         audience: jwtAudience,
         claims: claims,
-        expires: DateTime.Now.AddHours(1),
+        expires: DateTime.UtcNow.AddHours(1),
         signingCredentials: creds
     );
 
@@ -145,12 +146,12 @@ app.MapGet("/tasks/{id}", async (AppDbContext db, int id, ClaimsPrincipal user) 
 
     if(task is null) return Results.NotFound();
 
-    if(task.UserId != userId) return Results.Unauthorized();
+    if(task.UserId != userId) return Results.Forbid();
     return Results.Ok(task);
 })
 .RequireAuthorization();
 
-app.MapPut("/tasks/{id}", async (AppDbContext db, int id, TodoTask uptTask, ClaimsPrincipal user, ILogger<Program> logger) => {
+app.MapPut("/tasks/{id}", async (AppDbContext db, int id, TodoTaskDto uptTask, ClaimsPrincipal user, ILogger<Program> logger) => {
 
     logger.LogWarning("{id}", id);
 
@@ -160,7 +161,7 @@ app.MapPut("/tasks/{id}", async (AppDbContext db, int id, TodoTask uptTask, Clai
 
     var task = await db.Tasks.FindAsync(id);
     if(task is null) return Results.NotFound();
-    if(task.UserId != userId) return Results.Unauthorized();
+    if(task.UserId != userId) return Results.Forbid();
 
     task.Title = uptTask.Title;
     task.Content = uptTask.Content;
@@ -177,12 +178,13 @@ app.MapDelete("/tasks/{id}", async (AppDbContext db, int id, ClaimsPrincipal use
 
     var task = await db.Tasks.FindAsync(id);
     if(task is null) return Results.NotFound();
-    if(task.UserId != userId) return Results.Unauthorized();
+    if(task.UserId != userId) return Results.Forbid();
 
     db.Tasks.Remove(task);
     await db.SaveChangesAsync();
     return Results.NoContent();
-});
+})
+.RequireAuthorization();
 
 app.MapPatch("/tasks/{id}/conclude", async (AppDbContext db, int id, ClaimsPrincipal user) => {
     var userIdStr = user.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -190,12 +192,13 @@ app.MapPatch("/tasks/{id}/conclude", async (AppDbContext db, int id, ClaimsPrinc
 
     var task = await db.Tasks.FindAsync(id);
     if(task is null) return Results.NotFound();
-    if(task.UserId != userId) return Results.Unauthorized();
+    if(task.UserId != userId) return Results.Forbid();
 
     task.Concluded = true;
     await db.SaveChangesAsync();
 
     return Results.Ok(task);
-});
+})
+.RequireAuthorization();
 
 app.Run();

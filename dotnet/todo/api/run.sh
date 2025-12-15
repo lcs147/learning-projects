@@ -11,4 +11,4 @@ fi
 
 echo "--- Starting Backend Setup and Run (dotnet) ---"
 dotnet restore
-dotnet run
+dotnet run -- "Jwt:Key=ImUUqGjuzQACQciNEJydxXybdqotjKsH" # for learning
