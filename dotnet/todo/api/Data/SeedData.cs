@@ -8,6 +8,5 @@ public static class SeedData
 {
     public static async Task Initialize(AppDbContext db)
     {
-        await db.Database.EnsureCreatedAsync();
     }
 }
