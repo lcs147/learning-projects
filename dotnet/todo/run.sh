@@ -13,7 +13,7 @@ fi
 echo "--- Starting Backend Setup and Run (dotnet) ---"
 cd api
 dotnet restore
-dotnet run &
+dotnet run
 
 API_PID=$!
 

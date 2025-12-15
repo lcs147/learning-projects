@@ -9,4 +9,5 @@ public class AppDbContext : DbContext
     {
     }
     public DbSet<TodoTask> Tasks { get; set; }
+    public DbSet<TodoUser> Users { get; set; }
 }
