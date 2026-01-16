@@ -24,10 +24,10 @@ def softmax(v, axis = -1):
 # ==========================
 # Losses + Scores
 
-def mse(flat_params, params, predict, x_dense, x_cat, target):
+def rmse(flat_params, params, predict, x_dense, x_cat, target):
     pred = predict(params, x_dense, x_cat)
 
-    loss = np.mean((target - pred) ** 2)
+    loss = np.sqrt(np.mean((target - pred) ** 2))
     l2 = 3e-5 * np.sum(flat_params ** 2)
     
     return loss + l2
