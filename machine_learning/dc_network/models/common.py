@@ -24,17 +24,31 @@ def softmax(v, axis = -1):
 # ==========================
 # Losses + Scores
 
-def mse(params, predict, x_dense, x_cat, target):
+def mse(flat_params, params, predict, x_dense, x_cat, target):
     pred = predict(params, x_dense, x_cat)
-    return np.mean((target - pred) ** 2)
 
-def logloss(params, predict, x_dense, x_cat, target):
+    loss = np.mean((target - pred) ** 2)
+    l2 = 3e-5 * np.sum(flat_params ** 2)
+    
+    return loss + l2
+
+def logloss(flat_params, params, predict, x_dense, x_cat, target):
     pred = sigmoid(predict(params, x_dense, x_cat))
     pred = np.clip(pred, 1e-9, 1 - 1e-9)
 
-    return -np.mean(target * np.log(pred) + (1 - target) * np.log(1 - pred))
+    loss = -np.mean(target * np.log(pred) + (1.0 - target) * np.log(1.0 - pred))
+    l2 = 3e-5 * np.sum(flat_params ** 2)
 
-from sklearn.metrics import roc_auc_score
-def aucscore(params, predict, x_dense, x_cat, target):
-    pred = sigmoid(predict(params, x_dense, x_cat))
-    return roc_auc_score(target.flatten(), pred.flatten())
+    return loss + l2
+
+from sklearn.metrics import roc_curve, auc
+def all_scores(pred, target):
+    fpr, tpr, thresholds = roc_curve(target, pred)
+    
+    auc_val = auc(fpr, tpr)
+    gini = 2.0 * auc_val - 1.0
+
+    ks = np.max(tpr - fpr)
+    ks_threshold = thresholds[np.argmax(tpr - fpr)]
+
+    return {'auc':auc_val, 'gini':gini, 'ks':ks, 'ks_threshold':ks_threshold}

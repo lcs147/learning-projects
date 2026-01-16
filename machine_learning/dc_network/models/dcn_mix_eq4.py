@@ -7,9 +7,8 @@ def create_cross_net(d, r, n_experts):
     C = create_mat((n_experts, r, r))
     U = create_mat((n_experts, r, d))
     # V @ C @ U = W
-    # dr + rr + rd = r^2 + 2rd <= d^2
-    # -d^2 + 2rd + r^2 <= 0
-    # r < 0.412 d
+    # (dr + rr + rd)k <= d^2
+    # r <=~ d / 3k
 
     bias = np.zeros((1, d))
 
@@ -27,7 +26,7 @@ def init_params(n_dense_features, d_embeddings = [], l_cn = 2, d_ff = -1 , l_ff 
     # Set Free Variables
 
     if d_ff == -1: d_ff = 4 * d_cn
-    if r == -1: r = min(max(np.floor(r_frac * d_cn).astype(int), 1), 258)
+    if r == -1: r = min(max(np.ceil(d_cn / (2 * n_experts * 2)).astype(int), 2), 258)
 
     # =======================
     # Layers
@@ -50,9 +49,9 @@ def init_params(n_dense_features, d_embeddings = [], l_cn = 2, d_ff = -1 , l_ff 
 
 def predict(params, x_dense, x_cat):
 
-    embs = [emb[idx] for emb, idx in zip(params['emb'], x_cat)]
+    embs = [emb[idx] for emb, idx in zip(params['emb'], x_cat.T)]
 
-    x0 = np.hstack([x_dense.T] + embs)
+    x0 = np.hstack([x_dense] + embs)
     x = x0
     # (batch, d_cn)
     

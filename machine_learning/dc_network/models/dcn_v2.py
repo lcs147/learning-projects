@@ -35,12 +35,12 @@ def init_params(n_dense_features, d_embeddings = [], l_cn = 2, d_ff = -1 , l_ff 
     return {'emb': emb_layers, 'cn': cn_layers, 'ff': ff_layers, 'W_out': W_output}
 
 def predict(params, x_dense, x_cat):
+    # (batch, d)
 
-    embs = [emb[idx] for emb, idx in zip(params['emb'], x_cat)]
+    embs = [emb[idx] for emb, idx in zip(params['emb'], x_cat.T)] # (batch, d_cat)
 
-    x0 = np.hstack([x_dense.T] + embs)
+    x0 = np.hstack([x_dense] + embs) # (batch, d_cn)
     x = x0
-    # (batch, d_cn)
     
     for W, bias in params['cn']:
         x = x0 * (x @ W + bias) + x
